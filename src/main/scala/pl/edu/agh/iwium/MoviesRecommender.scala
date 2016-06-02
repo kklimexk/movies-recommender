@@ -4,7 +4,7 @@ import org.apache.spark.mllib.recommendation.{ALS, MatrixFactorizationModel, Rat
 import org.apache.spark.rdd.RDD
 import SparkConfig.sc
 
-case class MovieRecommender() {
+case class MoviesRecommender() {
 
   private val myRatings = DataLoader.loadPersonalRatings
   private val ratings = DataLoader.loadRatings
@@ -108,7 +108,7 @@ case class MovieRecommender() {
     var i = 1
     println("Movies recommended for you:")
     recommendations.foreach { r =>
-      println("%2d".format(i) + ": " + movies(r.product))
+      println("%2d".format(i) + ": " + movies(r.product) + " - " + r.rating)
       i += 1
     }
   }

@@ -1,7 +1,7 @@
 package pl.edu.agh.iwium
 
-object MovieRecommenderApp {
+object MoviesRecommenderApp {
   def main(args: Array[String]) {
-    MovieRecommender().run()
+    MoviesRecommender().run()
   }
 }
