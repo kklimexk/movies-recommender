@@ -1,5 +1,8 @@
 package pl.edu.agh.iwium
 
+import java.io.{File, FileWriter}
+import java.util.Date
+
 import org.apache.spark.mllib.recommendation.{ALS, MatrixFactorizationModel, Rating}
 import org.apache.spark.rdd.RDD
 import SparkConfig.sc
@@ -55,6 +58,11 @@ case class MoviesRecommender() {
     println("Training: " + numTraining + ", validation: " + numValidation + ", test: " + numTest)
     //========train models and evaluate them on the validation set==========
 
+    val dir = new File("./stats/")
+    if (!dir.exists()) dir.mkdirs()
+
+    val file = new File("./stats/" + "stats_" + new Date().getTime + ".txt")
+
     val ranks = List(8, 12)
     val lambdas = List(0.1, 10.0)
     val numIters = List(10, 20)
@@ -64,10 +72,14 @@ case class MoviesRecommender() {
     var bestLambda = -1.0
     var bestNumIter = -1
     for (rank <- ranks; lambda <- lambdas; numIter <- numIters) {
+
       val model = ALS.train(training, rank, numIter, lambda)
       val validationRmse = computeRmse(model, validation, numValidation)
-      println("RMSE (validation) = " + validationRmse + " for the model trained with rank = "
-        + rank + ", lambda = " + lambda + ", and numIter = " + numIter + ".")
+
+      val rmseStr = "RMSE (validation) = " + validationRmse + " for the model trained with rank = " + rank + ", lambda = " + lambda + ", and numIter = " + numIter + "."
+      println(rmseStr)
+      new FileWriter(file, true) { write(rmseStr + "\n"); close() }
+
       if (validationRmse < bestValidationRmse) {
         bestModel = Some(model)
         bestValidationRmse = validationRmse
