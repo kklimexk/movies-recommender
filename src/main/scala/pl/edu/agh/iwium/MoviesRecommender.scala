@@ -63,9 +63,9 @@ case class MoviesRecommender() {
 
     val file = new File("./stats/" + "stats_" + new Date().getTime + ".txt")
 
-    val ranks = List(2, 8, 12, 20, 50)
-    val lambdas = List(0.01, 0.1, 0.5, 0.1, 2.0, 5.0, 7.0, 10.0)
-    val numIters = List(5, 10, 15, 20)
+    val ranks = List(8, 12)
+    val lambdas = List(0.1, 10.0)
+    val numIters = List(10, 20)
     var bestModel: Option[MatrixFactorizationModel] = None
     var bestValidationRmse = Double.MaxValue
     var bestRank = 0
