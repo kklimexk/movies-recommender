@@ -34,8 +34,8 @@ object DataLoader {
   def loadMovies(implicit sc: SparkContext) = {
     sc.textFile(new File(classLoader.getResource("movies.dat").getFile).toString).map { line =>
       val fields = line.split("::")
-      // format: (movieId, movieName)
-      (fields(0).toInt, fields(1))
+      // format: (movieId, movieName + "," + movieGenres)
+      (fields(0).toInt, fields(1) + ", " + fields(2))
     }.collect().toMap
   }
 
